@@ -77,10 +77,22 @@ class UserController extends Controller
                 'message' => 'Successfully logged in!',
             ], 200);
         }
-
+        // if (Auth::user()->role == 1) {
+        //     return response()->json([
+        //         'message' => 'Successfully logged in as an admin!',
+        //     ], 200);
+        // }
         return response()->json([
             'message' => 'Invalid credentials',
         ], 401);
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+        return response()->json([
+            'message' => 'Successfully logged out!',
+        ], 200);
     }
 
     /**
@@ -89,6 +101,8 @@ class UserController extends Controller
     public function show(string $id)
     {
         //
+        $data = User::find($id);
+        return response()->json($data);
     }
 
     /**
@@ -105,6 +119,17 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $user = User::find($id);
+        if (Hash::check($request->password, Auth::user()->password)) {
+            $user->update($request->all());
+            return response()->json([
+                'message' => 'Successfully updated user!'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
+        }
     }
 
     /**
@@ -113,5 +138,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+        $user = User::find($id);
+        $user->delete();
     }
 }

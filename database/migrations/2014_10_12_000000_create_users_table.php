@@ -34,6 +34,17 @@ return new class extends Migration
             'address' => '123 Street',
             'role' => 1,
         ]);
+
+        // add 1 record
+        DB::table('users')->insert([
+            'name' => 'Fadil',
+            'username' => 'diru',
+            'email' => 'fadil@mail.com',
+            'password' => Hash::make('asdasd'),
+            'phone_number' => '0123456789',
+            'address' => '123 Street',
+            'role' => 0,
+        ]);
         
     }
 
