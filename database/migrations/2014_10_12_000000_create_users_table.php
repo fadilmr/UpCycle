@@ -16,18 +16,23 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->string('phone_number')->nullable();
+            $table->string('address')->nullable();
+            $table->boolean('role')->default(0);
         });
 
         // add 1 record
         DB::table('users')->insert([
             'name' => 'John Doe',
+            'username' => 'jon',
             'email' => 'jon@jon.com',
             'password' => Hash::make('password'),
+            'phone_number' => '0123456789',
+            'address' => '123 Street',
+            'role' => 1,
         ]);
         
     }

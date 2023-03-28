@@ -39,16 +39,22 @@ class UserController extends Controller
     {
         $rules = [
             'name' => 'required',
+            'username' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
-            'password_confirmation' => 'required|same:password'
+            'password_confirmation' => 'required|same:password',
+            'phone_number' => 'required|numeric',
+            'address' => 'required',
         ];
 
         $this->validate($request, $rules);
         $user = new User([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'password' => bcrypt($request->password),
+            'phone_number' => $request->phone_number,
+            'address' => $request->address,
         ]);
 
         $user->save();
@@ -60,13 +66,13 @@ class UserController extends Controller
     public function login(Request $request)
     {
         $rules = [
-            'email' => 'required|email',
+            'username' => 'required',
             'password' => 'required|min:6'
         ];
 
         $this->validate($request, $rules);
 
-        if (Auth::attempt($request->only('email', 'password'))) {
+        if (Auth::attempt($request->only('username', 'password'))) {
             return response()->json([
                 'message' => 'Successfully logged in!',
             ], 200);
