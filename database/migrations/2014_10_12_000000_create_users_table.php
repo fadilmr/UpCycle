@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
@@ -23,6 +22,7 @@ return new class extends Migration
             $table->string('phone_number')->nullable();
             $table->string('address')->nullable();
             $table->boolean('role')->default(0);
+            $table->timestamps();
         });
 
         // add 1 record

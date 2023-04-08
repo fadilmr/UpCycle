@@ -88,7 +88,8 @@ class UserController extends Controller
 
         $user->save();
         return response()->json([
-            'message' => 'Successfully created user!'
+            'message' => 'Successfully created user!',
+            'user' => $user
         ], 200);
     }
 
@@ -183,7 +184,8 @@ class UserController extends Controller
         $user->address = $request->address;
         $user->save();
         return response()->json([
-            'message' => 'Successfully updated user!'
+            'message' => 'Successfully updated user!',
+            'user' => $user
         ], 200);
     }
 
@@ -197,6 +199,7 @@ class UserController extends Controller
         $user->delete();
         return response()->json([
             'message' => 'Successfully deleted user!'
+            
         ], 200);
     }
 }
