@@ -154,17 +154,38 @@ class UserController extends Controller
     public function update(Request $request, string $id)
     {
         //
-        $user = User::find($id);
-        if (Hash::check($request->password, Auth::user()->password)) {
-            $user->update($request->all());
-            return response()->json([
-                'message' => 'Successfully updated user!'
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Invalid credentials',
-            ], 401);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'username' => 'required|unique:users',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'password_confirmation' => 'required|same:password',
+            'phone_number' => 'required|numeric',
+            'address' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'message' => 'Validation failed',
+                    'error' => $validator->errors()
+                ],
+                422
+            );
         }
+
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->username = $request->username;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->phone_number = $request->phone_number;
+        $user->address = $request->address;
+        $user->save();
+        return response()->json([
+            'message' => 'Successfully updated user!'
+        ], 200);
     }
 
     /**
