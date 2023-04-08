@@ -3,14 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Dotenv\Validator;
-use Illuminate\Contracts\Validation\Validator as ValidationValidator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator as FacadesValidator;
-use Nette\Utils\Validators;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -37,7 +33,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $rules = [
+        // $rules = [
+        //     'name' => 'required',
+        //     'username' => 'required|unique:users',
+        //     'email' => 'required|email|unique:users',
+        //     'password' => 'required|min:6',
+        //     'password_confirmation' => 'required|same:password',
+        //     'phone_number' => 'required|numeric',
+        //     'address' => 'required',
+        // ];
+
+        // $this->validate($request, $rules);
+        // $user = new User([
+        //     'name' => $request->name,
+        //     'username' => $request->username,
+        //     'email' => $request->email,
+        //     'password' => bcrypt($request->password),
+        //     'phone_number' => $request->phone_number,
+        //     'address' => $request->address,
+        // ]);
+
+        // $user->save();
+        // return response()->json([
+        //     'message' => 'Successfully created user!'
+        // ], 200);
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => 'required|unique:users',
             'email' => 'required|email|unique:users',
@@ -45,9 +66,18 @@ class UserController extends Controller
             'password_confirmation' => 'required|same:password',
             'phone_number' => 'required|numeric',
             'address' => 'required',
-        ];
+        ]);
 
-        $this->validate($request, $rules);
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'message' => 'Validation failed',
+                    'error' => $validator->errors()
+                ],
+                422
+            );
+        }
+
         $user = new User([
             'name' => $request->name,
             'username' => $request->username,
@@ -65,26 +95,31 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        $rules = [
+        $validator = Validator::make($request->all(), [
             'username' => 'required',
-            'password' => 'required|min:6'
-        ];
+            'password' => 'required|min:6',
+        ]);
 
-        $this->validate($request, $rules);
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'message' => 'Validation failed',
+                    'error' => $validator->errors()
+                ],
+                422
+            );
+        }
 
         if (Auth::attempt($request->only('username', 'password'))) {
             return response()->json([
                 'message' => 'Successfully logged in!',
             ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Invalid credentials',
+            ], 401);
         }
-        // if (Auth::user()->role == 1) {
-        //     return response()->json([
-        //         'message' => 'Successfully logged in as an admin!',
-        //     ], 200);
-        // }
-        return response()->json([
-            'message' => 'Invalid credentials',
-        ], 401);
+
     }
 
     public function logout()
