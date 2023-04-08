@@ -19,9 +19,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [UserController::class, 'login'])->name('user.login');
-Route::post('/register', [UserController::class, 'store'])->name('user.store');
-Route::get('/user', [UserController::class, 'index'])->name('user.index');
-Route::put('/edit/{id}', [UserController::class, 'update'])->name('user.update');
-Route::delete('/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy');
-
+Route::post('/login', [UserController::class, 'login'])->name('user.login'); //check
+Route::post('/register', [UserController::class, 'store'])->name('user.store'); //check
+Route::get('/user', [UserController::class, 'index'])->name('user.index'); //check
+Route::put('user/edit/{id}', [UserController::class, 'update'])->name('user.update'); //check
+Route::delete('user/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy'); //check
+Route::get('/logout', [UserController::class, 'logout'])->name('user.logout'); 
+Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show'); //check

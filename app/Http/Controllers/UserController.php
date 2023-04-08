@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -15,9 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return [
-            'data' => "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.r5sVD13FJ3a9eTGKsfZaksdgx2odA16xxmjtgl3GK9s"
-        ];
+        return User::all();
     }
 
     /**
@@ -157,8 +156,8 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'username' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
+            'username' => 'required', Rule::unique('users')->ignore($id),
+            'email' => 'required|email', Rule::unique('users')->ignore($id),
             'password' => 'required|min:6',
             'password_confirmation' => 'required|same:password',
             'phone_number' => 'required|numeric',
@@ -196,5 +195,8 @@ class UserController extends Controller
         //
         $user = User::find($id);
         $user->delete();
+        return response()->json([
+            'message' => 'Successfully deleted user!'
+        ], 200);
     }
 }
