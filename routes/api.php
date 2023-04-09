@@ -23,6 +23,7 @@ Route::post('/login', [UserController::class, 'login'])->name('user.login'); //c
 Route::post('/register', [UserController::class, 'store'])->name('user.store'); //check
 Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show'); //check
 Route::get('/user', [UserController::class, 'index'])->name('user.index'); //check
-Route::get('/logout', [UserController::class, 'logout'])->name('user.logout'); 
+Route::get('/logout', [UserController::class, 'logout'])->name('user.logout'); // cek sama rapli
 Route::put('user/edit/{id}', [UserController::class, 'update'])->name('user.update'); //check
 Route::delete('user/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy'); //check
+
