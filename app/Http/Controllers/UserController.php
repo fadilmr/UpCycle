@@ -119,7 +119,6 @@ class UserController extends Controller
                 'message' => 'Invalid credentials',
             ], 401);
         }
-
     }
 
     public function logout()
@@ -199,7 +198,7 @@ class UserController extends Controller
         $user->delete();
         return response()->json([
             'message' => 'Successfully deleted user!'
-            
+
         ], 200);
     }
 }
