@@ -52,6 +52,7 @@ Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->na
 
 //transaksi
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaksi.index'); //check
+Route::get('/transaction/{id}', [TransactionController::class, 'show'])->name('transaksi.show'); //check
 Route::post('/transaction/store', [TransactionController::class, 'store'])->name('transaksi.store'); //check
 Route::put('/transaction/edit/{id}', [TransactionController::class, 'update'])->name('transaksi.update'); //check
 Route::delete('/transaction/delete/{id}', [TransactionController::class, 'destroy'])->name('transaksi.destroy'); //check
