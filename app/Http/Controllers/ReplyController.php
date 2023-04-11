@@ -37,13 +37,25 @@ class ReplyController extends Controller
             'reply_text' => 'required',
             'reply_date' => 'required',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
                 'errors' => $validator->errors()
             ], 422);
         }
+
+        $reply = new Reply();
+        $reply->comment_id = $request->comment_id;
+        $reply->user_id = $request->user_id;
+        $reply->reply_text = $request->reply_text;
+        $reply->reply_date = $request->reply_date;
+        $reply->save();
+
+        return response()->json([
+            'message' => 'Successfully created reply!',
+            'reply' => $reply
+        ], 201);
     }
 
     /**

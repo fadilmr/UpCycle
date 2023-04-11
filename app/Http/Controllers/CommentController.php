@@ -13,26 +13,11 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
-        $comments = Comment::with('reply')->get();
-        foreach ($comments as $comment) {
-            $commentData = [
-                'comment_text' => $comment->comment_text,
-                'comment_date' => $comment->comment_date,
-                'user_id' => $comment->user_id,
-                'reply' => []
-            ];
-            foreach ($comment->reply as $reply) {
-                $commentData['reply'][] = [
-                    'reply_text' => $reply->reply_text,
-                    'reply_date' => $reply->reply_date,
-                    'user_id' => $reply->user_id,
-                ];
-            }
-        }
+        // join comment and reply
+        $comments = Comment::with('replies')->get();
         return response()->json([
             'message' => 'Successfully retrieved comments!',
-            'comments' => $commentData
+            'comments' => $comments
         ], 200);
     }
 
@@ -52,7 +37,7 @@ class CommentController extends Controller
         //
         $validator = Validator::make($request->all(), [
             'user_id' => 'required',
-            'post_id' => 'required',
+            'product_id' => 'required',
             'comment_text' => 'required',
             'comment_date' => 'required',
         ]);
@@ -68,7 +53,7 @@ class CommentController extends Controller
         $comment->comment_text = $request->comment_text;
         $comment->comment_date = $request->comment_date;
         $comment->user_id = $request->user_id;
-        $comment->post_id = $request->post_id;
+        $comment->product_id = $request->product_id;
         $comment->save();
 
         return response()->json([
@@ -114,7 +99,7 @@ class CommentController extends Controller
             'comment_text' => 'required',
             'comment_date' => 'required',
             'user_id' => 'required',
-            'post_id' => 'required',
+            'product_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -129,7 +114,7 @@ class CommentController extends Controller
             $comment->comment_text = $request->comment_text;
             $comment->comment_date = $request->comment_date;
             $comment->user_id = $request->user_id;
-            $comment->post_id = $request->post_id;
+            $comment->product_id = $request->product_id;
             $comment->save();
 
             return response()->json([

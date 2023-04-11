@@ -17,9 +17,8 @@ return new class extends Migration
             $table->date('comment_date');
             $table->foreignId('product_id')->constrained();
             $table->foreignId('user_id')->constrained();
+            $table->timestamps();
         });
-
-        
     }
 
     /**

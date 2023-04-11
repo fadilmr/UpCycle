@@ -9,11 +9,14 @@ class Reply extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'user_id',
         'comment_id',
         'reply_text',
         'reply_date',
+        'created_at',
+        'updated_at',
     ];
 
     protected $table = 'reply';
