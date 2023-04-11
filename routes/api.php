@@ -27,3 +27,14 @@ Route::get('/logout', [UserController::class, 'logout'])->name('user.logout'); /
 Route::put('user/edit/{id}', [UserController::class, 'update'])->name('user.update'); //check
 Route::delete('user/delete/{id}', [UserController::class, 'destroy'])->name('user.destroy'); //check
 
+Route::get('/comment', [CommentController::class, 'index'])->name('comment.index'); //check
+Route::get('/comment/{id}', [CommentController::class, 'show'])->name('comment.show'); //check
+Route::post('/comment', [CommentController::class, 'store'])->name('comment.store'); //check
+Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update'); //check
+Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('comment.destroy'); //check
+
+Route::get('/reply', [ReplyController::class, 'index'])->name('reply.index'); //check
+Route::get('/reply/{id}', [ReplyController::class, 'show'])->name('reply.show'); //check
+Route::post('/reply', [ReplyController::class, 'store'])->name('reply.store'); //check
+Route::put('/reply/{id}', [ReplyController::class, 'update'])->name('reply.update'); //check
+Route::delete('/reply/{id}', [ReplyController::class, 'destroy'])->name('reply.destroy'); //check

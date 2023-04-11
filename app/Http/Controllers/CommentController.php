@@ -14,7 +14,26 @@ class CommentController extends Controller
     public function index()
     {
         //
-
+        $comments = Comment::with('reply')->get();
+        foreach ($comments as $comment) {
+            $commentData = [
+                'comment_text' => $comment->comment_text,
+                'comment_date' => $comment->comment_date,
+                'user_id' => $comment->user_id,
+                'reply' => []
+            ];
+            foreach ($comment->reply as $reply) {
+                $commentData['reply'][] = [
+                    'reply_text' => $reply->reply_text,
+                    'reply_date' => $reply->reply_date,
+                    'user_id' => $reply->user_id,
+                ];
+            }
+        }
+        return response()->json([
+            'message' => 'Successfully retrieved comments!',
+            'comments' => $commentData
+        ], 200);
     }
 
     /**
