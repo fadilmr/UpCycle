@@ -18,58 +18,59 @@ return new class extends Migration
             $table->string('product_title');
             $table->string('product_description');
             $table->integer('product_price');
+            $table->string('product_image');
             $table->string('product_category');
             $table->timestamps();
         });
 
         // insert data
-        DB::table('products')->insert([
-            [
-                'user_id' => 1,
-                'product_title' => 'Product 1',
-                'product_description' => 'Product 1 Description',
-                'product_price' => 10000,
-                'product_category' => 'Category 1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => 1,
-                'product_title' => 'Product 2',
-                'product_description' => 'Product 2 Description',
-                'product_price' => 20000,
-                'product_category' => 'Category 2',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => 1,
-                'product_title' => 'Product 3',
-                'product_description' => 'Product 3 Description',
-                'product_price' => 30000,
-                'product_category' => 'Category 3',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => 1,
-                'product_title' => 'Product 4',
-                'product_description' => 'Product 4 Description',
-                'product_price' => 40000,
-                'product_category' => 'Category 4',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'user_id' => 1,
-                'product_title' => 'Product 5',
-                'product_description' => 'Product 5 Description',
-                'product_price' => 50000,
-                'product_category' => 'Category 5',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-        ]);
+        // DB::table('products')->insert([
+        //     [
+        //         'user_id' => 1,
+        //         'product_title' => 'Product 1',
+        //         'product_description' => 'Product 1 Description',
+        //         'product_price' => 10000,
+        //         'product_category' => 'Category 1',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        //     [
+        //         'user_id' => 1,
+        //         'product_title' => 'Product 2',
+        //         'product_description' => 'Product 2 Description',
+        //         'product_price' => 20000,
+        //         'product_category' => 'Category 2',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        //     [
+        //         'user_id' => 1,
+        //         'product_title' => 'Product 3',
+        //         'product_description' => 'Product 3 Description',
+        //         'product_price' => 30000,
+        //         'product_category' => 'Category 3',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        //     [
+        //         'user_id' => 1,
+        //         'product_title' => 'Product 4',
+        //         'product_description' => 'Product 4 Description',
+        //         'product_price' => 40000,
+        //         'product_category' => 'Category 4',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        //     [
+        //         'user_id' => 1,
+        //         'product_title' => 'Product 5',
+        //         'product_description' => 'Product 5 Description',
+        //         'product_price' => 50000,
+        //         'product_category' => 'Category 5',
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ],
+        // ]);
     }
 
     /**

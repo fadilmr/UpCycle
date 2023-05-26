@@ -77,7 +77,8 @@ class CommentController extends Controller
         } else {
             return response()->json([
                 'message' => 'Comment not found!',
-            ], 404);
+                'status' => "404",
+            ]);
         }
     }
 

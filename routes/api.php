@@ -46,7 +46,8 @@ Route::delete('/reply/{id}', [ReplyController::class, 'destroy'])->name('reply.d
 //product
 Route::get('/product', [ProductController::class, 'index'])->name('product.index'); //check
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show'); //check
-Route::post('/product/store', [ProductController::class, 'store'])->name('product.store'); //check
+Route::get('/product/user/{id}', [ProductController::class, 'showUser'])->name('product.showUser'); //check
+Route::post('/product', [ProductController::class, 'store'])->name('product.store'); //check
 Route::put('/product/edit/{id}', [ProductController::class, 'update'])->name('product.update'); // check
 Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->name('product.destroy'); //check
 

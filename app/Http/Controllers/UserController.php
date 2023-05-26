@@ -32,31 +32,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // $rules = [
-        //     'name' => 'required',
-        //     'username' => 'required|unique:users',
-        //     'email' => 'required|email|unique:users',
-        //     'password' => 'required|min:6',
-        //     'password_confirmation' => 'required|same:password',
-        //     'phone_number' => 'required|numeric',
-        //     'address' => 'required',
-        // ];
-
-        // $this->validate($request, $rules);
-        // $user = new User([
-        //     'name' => $request->name,
-        //     'username' => $request->username,
-        //     'email' => $request->email,
-        //     'password' => bcrypt($request->password),
-        //     'phone_number' => $request->phone_number,
-        //     'address' => $request->address,
-        // ]);
-
-        // $user->save();
-        // return response()->json([
-        //     'message' => 'Successfully created user!'
-        // ], 200);
-
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'username' => 'required|unique:users',
@@ -71,9 +46,9 @@ class UserController extends Controller
             return response()->json(
                 [
                     'message' => 'Validation failed',
-                    'error' => $validator->errors()
+                    'error' => $validator->errors(),
+                    'status' => '422'
                 ],
-                422
             );
         }
 
@@ -89,6 +64,7 @@ class UserController extends Controller
         $user->save();
         return response()->json([
             'message' => 'Successfully created user!',
+            'status' => '200',
             'user' => $user
         ], 200);
     }
@@ -97,27 +73,30 @@ class UserController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required',
-            'password' => 'required|min:6',
+            'password' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(
                 [
                     'message' => 'Validation failed',
-                    'error' => $validator->errors()
-                ],
-                422
+                    'error' => $validator->errors(),
+                    'status' => '422'
+                ]
             );
         }
 
         if (Auth::attempt($request->only('username', 'password'))) {
             return response()->json([
                 'message' => 'Successfully logged in!',
+                'status' => '200',
+                'data' => Auth::user()
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Invalid credentials',
-            ], 401);
+                'status' => '401',
+            ]);
         }
     }
 
@@ -126,6 +105,7 @@ class UserController extends Controller
         Auth::logout();
         return response()->json([
             'message' => 'Successfully logged out!',
+            'status' => '200'
         ], 200);
     }
 
@@ -168,9 +148,9 @@ class UserController extends Controller
             return response()->json(
                 [
                     'message' => 'Validation failed',
-                    'error' => $validator->errors()
+                    'error' => $validator->errors(),
+                    'status' => '422'
                 ],
-                422
             );
         }
 

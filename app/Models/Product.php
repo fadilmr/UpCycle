@@ -22,6 +22,7 @@ class Product extends Model
         'product_description',
         'product_price',
         'product_category',
+        'product_image',
         'created_at',
         'updated_at',
     ];
