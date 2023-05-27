@@ -17,7 +17,7 @@ class CommentController extends Controller
         $comments = Comment::with('replies')->get();
         return response()->json([
             'message' => 'Successfully retrieved comments!',
-            'comments' => $comments
+            'comments' => [$comments]
         ], 200);
     }
 
@@ -39,19 +39,18 @@ class CommentController extends Controller
             'user_id' => 'required',
             'product_id' => 'required',
             'comment_text' => 'required',
-            'comment_date' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
-                'errors' => $validator->errors()
-            ], 422);
+                'errors' => $validator->errors(),
+                'status' => '422',
+            ]);
         }
 
         $comment = new Comment();
         $comment->comment_text = $request->comment_text;
-        $comment->comment_date = $request->comment_date;
         $comment->user_id = $request->user_id;
         $comment->product_id = $request->product_id;
         $comment->save();
@@ -69,6 +68,25 @@ class CommentController extends Controller
     {
         //
         $comment = Comment::find($id);
+        if ($comment) {
+            return response()->json([
+                'message' => 'Successfully retrieved comment!',
+                'comment' => [$comment]
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Comment not found!',
+                'status' => "404",
+            ]);
+        }
+    }
+
+    public function showProduct(string $id)
+    {
+        //join comment and product search with product_id
+        $comment = Comment::join('products', 'comments.product_id', '=', 'products.id')->join('users', 'comments.user_id', '=', 'users.id')
+            ->where('products.id', '=', $id)
+            ->select('comments.*', 'users.name')->get();
         if ($comment) {
             return response()->json([
                 'message' => 'Successfully retrieved comment!',

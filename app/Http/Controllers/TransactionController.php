@@ -20,29 +20,52 @@ class TransactionController extends Controller
         return response()->json($transaction);
     }
 
+    public function showUser($id)
+    {
+        // $transaction = Transaction::findOrFail($id);
+        // transaction join table user
+        $transaction = Transaction::join('users', 'users.id', '=', 'transaction.user_id')->join('products', 'products.id', '=', 'transaction.product_id')
+            ->select('transaction.*', 'users.name', 'products.*')
+            ->where('users.id', '=', $id)
+            ->get();
+        return response()->json([$transaction]);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
             'user_id' => 'required|exists:users,id',
-            'status' => 'required|boolean'
+            'image' => 'required'
         ]);
 
         if ($validator->fails()) {
             return response()->json(
                 [
                     'message' => 'Validation failed',
-                    'error' => $validator->errors()
+                    'error' => $validator->errors(),
+                    'status' => '422'
                 ],
-                422
             );
         }
 
-        $transaction = Transaction::create($request->only(['product_id', 'user_id', 'status']));
+        if (!$request->has('image')) {
+            return response()->json(['message' => 'Missing file']);
+        }
+        $file = $request->file('image');
+        $file_name = time() . '.' . $file->extension();
+        $file->move(public_path('images'), $file_name);
 
+        $transaction = new Transaction;
+        $transaction->status = "pending";
+        $transaction->product_id = $request->product_id;
+        $transaction->user_id = $request->user_id;
+        $transaction->image = $file_name;
+        $transaction->save();
         return response()->json([
             'message' => 'Successfully created transaction!',
-            'transaction' => $transaction
+            'transaction' => $transaction,
+            'status' => '200'
         ], 200);
     }
 

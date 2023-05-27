@@ -89,28 +89,36 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
             'product_title' => 'required',
             'product_description' => 'required',
             'product_price' => 'required',
             'product_category' => 'required',
+            'product_image' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json(
                 [
                     'message' => 'Validation failed',
-                    'error' => $validator->errors()
+                    'error' => $validator->errors(),
+                    'status' => '422'
                 ],
-                422
             );
         }
+
+        if (!$request->has('product_image')) {
+            return response()->json(['message' => 'Missing file']);
+        }
+        $file = $request->file('product_image');
+        $file_name = time() . '.' . $file->extension();
+        $file->move(public_path('images'), $file_name);
 
         $product = Product::findOrFail($id);
         $product->product_title = $request->product_title;
         $product->product_description = $request->product_description;
         $product->product_price = $request->product_price;
         $product->product_category = $request->product_category;
+        $product->product_image = $file_name;
         $product->save();
         return response()->json([
             'message' => 'Successfully updated product!',

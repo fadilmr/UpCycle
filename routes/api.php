@@ -33,6 +33,7 @@ Route::delete('user/delete/{id}', [UserController::class, 'destroy'])->name('use
 
 Route::get('/comment', [CommentController::class, 'index'])->name('comment.index');
 Route::get('/comment/{id}', [CommentController::class, 'show'])->name('comment.show');
+Route::get('/comment/product/{id}', [CommentController::class, 'showProduct'])->name('comment.showProduct');
 Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
 Route::put('/comment/{id}', [CommentController::class, 'update'])->name('comment.update');
 Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
@@ -48,12 +49,13 @@ Route::get('/product', [ProductController::class, 'index'])->name('product.index
 Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show'); //check
 Route::get('/product/user/{id}', [ProductController::class, 'showUser'])->name('product.showUser'); //check
 Route::post('/product', [ProductController::class, 'store'])->name('product.store'); //check
-Route::put('/product/edit/{id}', [ProductController::class, 'update'])->name('product.update'); // check
+Route::post('/product/edit/{id}', [ProductController::class, 'update'])->name('product.update')->middleware('cors'); // check
 Route::delete('/product/delete/{id}', [ProductController::class, 'destroy'])->name('product.destroy'); //check
 
 //transaksi
 Route::get('/transaction', [TransactionController::class, 'index'])->name('transaksi.index'); //check
 Route::get('/transaction/{id}', [TransactionController::class, 'show'])->name('transaksi.show'); //check
-Route::post('/transaction/store', [TransactionController::class, 'store'])->name('transaksi.store'); //check
+Route::get('/transaction/user/{id}', [TransactionController::class, 'showUser'])->name('transaksi.showUser'); //check
+Route::post('/transaction', [TransactionController::class, 'store'])->name('transaksi.store'); //check
 Route::put('/transaction/edit/{id}', [TransactionController::class, 'update'])->name('transaksi.update'); //check
 Route::delete('/transaction/delete/{id}', [TransactionController::class, 'destroy'])->name('transaksi.destroy'); //check

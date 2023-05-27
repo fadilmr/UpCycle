@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->boolean('status');
+            $table->string('status');
+            $table->string('image');
             $table->timestamps();
         });
     }

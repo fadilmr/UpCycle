@@ -16,6 +16,7 @@ class Transaction extends Model
         'user_id',
         'product_price',
         'status',
+        'image',
         'created_at',
         'updated_at',
     ];
