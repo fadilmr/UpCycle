@@ -122,7 +122,8 @@ class ProductController extends Controller
         $product->save();
         return response()->json([
             'message' => 'Successfully updated product!',
-            'product' => $product
+            'product' => $product,
+            'status' => '200'
         ], 200);
     }
 
@@ -130,6 +131,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $product->delete();
-        return response()->json(['message' => 'Product deleted']);
+        return response()->json([
+            'message' => 'Product deleted',
+            'status' => '200'
+        ]);
     }
 }
