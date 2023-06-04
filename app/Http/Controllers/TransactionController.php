@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -22,11 +23,8 @@ class TransactionController extends Controller
 
     public function showUser($id)
     {
-        // $transaction = Transaction::findOrFail($id);
-        // transaction join table user
-        $transaction = Transaction::join('users', 'users.id', '=', 'transaction.user_id')->join('products', 'products.id', '=', 'transaction.product_id')
-            ->select('transaction.*', 'users.name', 'products.*')
-            ->where('users.id', '=', $id)
+        $transaction = Product::join('transaction', 'transaction.product_id', '=', 'products.id')
+            ->where('products.user_id', $id)
             ->get();
         return response()->json([$transaction]);
     }
@@ -96,6 +94,32 @@ class TransactionController extends Controller
         ], 200);
     }
 
+    public function konfirmasi(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'status' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(
+                [
+                    'message' => 'Validation failed',
+                    'error' => $validator->errors(),
+                    'status' => '422'
+                ],
+            );
+        }
+        $transaction = Transaction::findOrFail($id);
+
+        $transaction->update($request->only(['status']));
+
+        return response()->json([
+            'message' => 'Successfully updated transaction!',
+            'transaction' => $transaction,
+            'status' => '200',
+        ], 200);
+    }
+
     public function destroy($id)
     {
         $transaction = Transaction::findOrFail($id);
@@ -104,7 +128,8 @@ class TransactionController extends Controller
 
         return response()->json([
             'message' => 'Successfully deleted transaction!',
-            'transaction' => $transaction
+            'transaction' => $transaction,
+            'status' => '200',
         ], 200);
     }
 }

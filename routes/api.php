@@ -58,4 +58,5 @@ Route::get('/transaction/{id}', [TransactionController::class, 'show'])->name('t
 Route::get('/transaction/user/{id}', [TransactionController::class, 'showUser'])->name('transaksi.showUser'); //check
 Route::post('/transaction', [TransactionController::class, 'store'])->name('transaksi.store'); //check
 Route::put('/transaction/edit/{id}', [TransactionController::class, 'update'])->name('transaksi.update'); //check
+Route::put('/transaction/konfirmasi/{id}', [TransactionController::class, 'konfirmasi'])->name('transaksi.konfirmasi'); //check
 Route::delete('/transaction/delete/{id}', [TransactionController::class, 'destroy'])->name('transaksi.destroy'); //check
