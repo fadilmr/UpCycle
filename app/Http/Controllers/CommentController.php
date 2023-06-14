@@ -53,6 +53,7 @@ class CommentController extends Controller
         $comment->comment_text = $request->comment_text;
         $comment->user_id = $request->user_id;
         $comment->product_id = $request->product_id;
+        $comment->prediksi = $request->prediksi;
         $comment->save();
 
         return response()->json([
@@ -134,6 +135,7 @@ class CommentController extends Controller
             $comment->comment_date = $request->comment_date;
             $comment->user_id = $request->user_id;
             $comment->product_id = $request->product_id;
+            $comment->prediksi = $request->prediksi;
             $comment->save();
 
             return response()->json([

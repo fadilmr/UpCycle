@@ -13,6 +13,7 @@ class Comment extends Model
         'user_id',
         'product_id',
         'comment_text',
+        'prediksi',
         'comment_date',
         'created_at',
         'updated_at',
